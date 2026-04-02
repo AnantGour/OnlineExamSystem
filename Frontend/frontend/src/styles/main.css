@@ -1,0 +1,35 @@
+body{
+    font-family:Arial;
+    background:#f4f6f8;
+    }
+    
+    .navbar{
+    display:flex;
+    justify-content:space-between;
+    padding:15px;
+    background:#1e88e5;
+    color:white;
+    }
+    
+    .exam-list{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+    padding:20px;
+    }
+    
+    .exam-card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    }
+    
+    button{
+    padding:10px 15px;
+    border:none;
+    background:#1e88e5;
+    color:white;
+    border-radius:5px;
+    cursor:pointer;
+    }

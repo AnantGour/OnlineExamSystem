@@ -1,0 +1,22 @@
+.exam-page{
+    padding:30px;
+  }
+  
+  .exam-header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:20px;
+  }
+  
+  .submit-btn{
+    background:#16a34a;
+    border:none;
+    padding:12px 20px;
+    color:white;
+    border-radius:6px;
+    cursor:pointer;
+  }
+  
+  .submit-btn:hover{
+    background:#15803d;
+  }

@@ -1,0 +1,25 @@
+.admin-dashboard{
+    padding:30px;
+  }
+  
+  .admin-dashboard h2{
+    margin-bottom:25px;
+  }
+  
+  .admin-actions{
+    display:flex;
+    gap:20px;
+  }
+  
+  .admin-actions button{
+    padding:12px 18px;
+    border:none;
+    background:#2563eb;
+    color:white;
+    border-radius:6px;
+    cursor:pointer;
+  }
+  
+  .admin-actions button:hover{
+    background:#1d4ed8;
+  }
