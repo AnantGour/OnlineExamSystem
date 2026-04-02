@@ -1,14 +1,27 @@
 const mongoose = require("mongoose");
 
 const examSchema = new mongoose.Schema({
-  title:String,
-  description:String,
-  duration:Number,
-  totalMarks:Number,
-  createdBy:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:"User"
-  }
-});
+  title: { type: String, required: true },
+  description: String,
 
-module.exports = mongoose.model("Exam",examSchema);
+  duration: { type: Number, required: true }, // minutes
+  totalMarks: Number,
+
+  totalQuestions: Number,
+
+  startTime: Date,
+  endTime: Date,
+
+  isPublished: {
+    type: Boolean,
+    default: false
+  },
+
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  }
+
+}, { timestamps: true });
+
+module.exports = mongoose.model("Exam", examSchema);
