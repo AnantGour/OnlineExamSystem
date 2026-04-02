@@ -6,44 +6,73 @@ const User = require("../models/User");
 
 const router = express.Router();
 
+// ================= REGISTER =================
 router.post("/register", async (req, res) => {
+  try {
+    console.log("REGISTER HIT");
 
-  const { name, email, password } = req.body;
+    const { name, email, password } = req.body;
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  const user = new User({
-    name,
-    email,
-    password: hashedPassword
-  });
+    const user = new User({
+      name,
+      email,
+      password: hashedPassword
+    });
 
-  await user.save();
+    await user.save();
 
-  res.json({ message: "User Registered" });
+    res.json({ message: "User Registered" });
 
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
+// ================= LOGIN =================
 router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-  const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: "User not found" });
 
-  const user = await User.findOne({ email });
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ message: "Invalid password" });
 
-  if (!user) return res.status(400).json({ message: "User not found" });
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      "examSecret",
+      { expiresIn: "1d" }
+    );
 
-  const isMatch = await bcrypt.compare(password, user.password);
+    res.json({ token, user });
 
-  if (!isMatch) return res.status(400).json({ message: "Invalid password" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
-  const token = jwt.sign(
-    { id: user._id, role: user.role },
-    "examSecret",
-    { expiresIn: "1d" }
-  );
+// ================= GET CURRENT USER (PROTECTED) =================
+router.get("/me", async (req, res) => {
+  try {
+    const token = req.header("Authorization");
 
-  res.json({ token, user });
+    if (!token) {
+      return res.status(401).json({ message: "No token, access denied" });
+    }
 
+    const decoded = jwt.verify(token, "examSecret");
+
+    const user = await User.findById(decoded.id).select("-password");
+
+    res.json(user);
+
+  } catch (error) {
+    res.status(401).json({ message: "Invalid token" });
+  }
 });
 
 module.exports = router;
