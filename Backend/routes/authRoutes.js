@@ -32,28 +32,26 @@ router.post("/register", async (req, res) => {
 });
 
 // ================= LOGIN =================
-router.post("/login", async (req, res) => {
+const loginUser = async (email, password, navigate) => {
   try {
-    const { email, password } = req.body;
+    const { data } = await axios.post("/api/login", {
+      email,
+      password,
+    });
 
-    const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "User not found" });
+    // ✅ Store token
+    localStorage.setItem("token", data.token);
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid password" });
+    // ✅ Store user
+    setUser(data.user);
 
-    const token = jwt.sign(
-      { id: user._id, role: user.role },
-      "examSecret",
-      { expiresIn: "1d" }
-    );
-
-    res.json({ token, user });
-
+    // ✅ Redirect
+    navigate("/dashboard"); // or "/"
+    
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.log(error.response?.data);
   }
-});
+};
 
 // ================= GET CURRENT USER (PROTECTED) =================
 router.get("/me", async (req, res) => {

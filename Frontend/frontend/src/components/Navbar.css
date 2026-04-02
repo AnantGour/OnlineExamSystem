@@ -1,32 +1,80 @@
-.navbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:16px 40px;
-    background:#1e293b;
-    color:white;
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 50px;
+  background: #0f172a; /* deeper modern dark */
+  color: #f8fafc;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Logo / Title */
+.navbar h2 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #e2e8f0;
+}
+
+/* Links Container */
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Optional: Add link styling */
+.navbar-links a {
+  text-decoration: none;
+  color: #cbd5f5;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.navbar-links a:hover {
+  color: #ffffff;
+}
+
+/* Button Styling */
+.navbar button {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Hover Effect */
+.navbar button:hover {
+  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+  transform: translateY(-1px);
+}
+
+/* Active Click Effect */
+.navbar button:active {
+  transform: scale(0.96);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 12px 20px;
   }
-  
-  .navbar h2{
-    font-size:22px;
-    font-weight:600;
+
+  .navbar h2 {
+    font-size: 18px;
   }
-  
-  .navbar-links{
-    display:flex;
-    gap:15px;
+
+  .navbar-links {
+    gap: 12px;
   }
-  
-  .navbar button{
-    background:#2563eb;
-    border:none;
-    padding:8px 16px;
-    border-radius:6px;
-    color:white;
-    cursor:pointer;
-    transition:0.3s;
+
+  .navbar button {
+    padding: 6px 12px;
+    font-size: 13px;
   }
-  
-  .navbar button:hover{
-    background:#1d4ed8;
-  }
+}
