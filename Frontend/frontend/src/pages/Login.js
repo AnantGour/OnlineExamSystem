@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserData } from "../context/UserContext";
+import API from "../api/axios";
 import "./Login.css";
 
 const Login = () => {
@@ -18,31 +19,21 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+      const { data } = await API.post("/auth/login", {
+        email,
+        password,
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message);
-      }
-
-      // ✅ Save token
+      // ✅ Save data
       localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
 
-      // ✅ Save user in context
       setUser(data.user);
 
-      // ✅ Redirect
       navigate("/dashboard");
 
     } catch (err) {
-      setError(err.message || "Login failed");
+      setError(err.response?.data?.message || "Login failed");
     }
 
     setLoading(false);

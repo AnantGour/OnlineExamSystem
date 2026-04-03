@@ -13,19 +13,31 @@ import Profile from "./pages/Profile";
 import { UserProvider, UserData } from "./context/UserContext";
 
 
-// 🔐 Protected Route Component
+// 🔐 Protected Route
 const ProtectedRoute = ({ children }) => {
   const { user } = UserData();
 
-  return user ? children : <Navigate to="/login" />;
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
 };
 
 
-// 🔐 Admin Route (optional but useful)
+// 🔐 Admin Route
 const AdminRoute = ({ children }) => {
   const { user } = UserData();
 
-  return user && user.role === "admin" ? children : <Navigate to="/dashboard" />;
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (user.role !== "admin") {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return children;
 };
 
 
@@ -37,11 +49,12 @@ function App() {
         <Navbar />
 
         <Routes>
-          {/* Public Routes */}
+
+          {/* 🔓 Public Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          {/* Protected Routes */}
+          {/* 🔐 Protected Routes */}
           <Route
             path="/dashboard"
             element={
@@ -78,7 +91,7 @@ function App() {
             }
           />
 
-          {/* Admin Route */}
+          {/* 👑 Admin Route */}
           <Route
             path="/admin"
             element={
@@ -88,8 +101,10 @@ function App() {
             }
           />
 
-          {/* Default Redirect */}
-          <Route path="/" element={<Navigate to="/login" />} />
+          {/* ✅ Default Routes */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
+
         </Routes>
 
       </BrowserRouter>

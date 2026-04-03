@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserData } from "../context/UserContext";
+import API from "../api/axios"; // ✅ IMPORT AXIOS INSTANCE
 import "./Register.css";
 
 const Register = () => {
@@ -30,7 +31,7 @@ const Register = () => {
 
     const { name, email, password } = formData;
 
-    // ✅ Basic Validation
+    // ✅ Validation
     if (!name || !email || !password) {
       setError("All fields are required");
       setLoading(false);
@@ -44,31 +45,24 @@ const Register = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, email, password }),
+      // ✅ AXIOS CALL
+      const { data } = await API.post("/auth/register", {
+        name,
+        email,
+        password,
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message);
-      }
-
-      // ✅ Save token
+      // ✅ Save token + user
       localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
 
-      // ✅ Save user
       setUser(data.user);
 
       // ✅ Redirect
       navigate("/dashboard");
 
     } catch (err) {
-      setError(err.message || "Registration failed");
+      setError(err.response?.data?.message || "Registration failed");
     }
 
     setLoading(false);

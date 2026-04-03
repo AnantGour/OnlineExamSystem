@@ -1,5 +1,5 @@
 import { useNavigate, Link } from "react-router-dom";
-import { UserData } from "../context/UserContext"; // ✅ FIXED
+import { UserData } from "../context/UserContext";
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -14,6 +14,7 @@ const Navbar = () => {
 
   return (
     <div className="navbar">
+      {/* Logo */}
       <h2 onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
         Exam System
       </h2>
@@ -23,14 +24,14 @@ const Navbar = () => {
           <>
             <span className="user-name">Hi, {user?.name}</span>
 
-            <button onClick={() => navigate("/dashboard")}>
-              Dashboard
-            </button>
+            {/* ✅ Dashboard Link (BEST PRACTICE) */}
+            <Link to="/dashboard">
+              <button>Dashboard</button>
+            </Link>
 
-            {/* ✅ Profile Button */}
-            <button onClick={() => navigate("/profile")}>
-              Profile
-            </button>
+            <Link to="/profile">
+              <button>Profile</button>
+            </Link>
 
             <button onClick={logoutHandler}>
               Logout
@@ -38,7 +39,6 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            {/* ✅ Using Link (better UX) */}
             <Link to="/login">
               <button>Login</button>
             </Link>
